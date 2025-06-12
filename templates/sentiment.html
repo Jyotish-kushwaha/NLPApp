@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sentiment Analysis</title>
+    <style>
+      body {
+        background: linear-gradient(to right, #74ebd5, #acb6e5);
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 40px;
+      }
+      textarea {
+        width: 60%;
+        height: 150px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 16px;
+        resize: none;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 25px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+      .result {
+        margin-top: 30px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .flash.error {
+        color: red;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sentiment Analysis</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% for
+    category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %} {% endwith %}
+
+    <form method="POST" action="/perform_sentiment">
+      <textarea
+        name="text"
+        placeholder="Enter your sentence or paragraph here..."
+        required
+      ></textarea
+      ><br />
+      <button type="submit">Analyze Sentiment</button>
+    </form>
+
+    {% if result %}
+    <div class="result">Sentiment: {{ result }}</div>
+    {% endif %}
+
+    <button
+      onclick="window.location.href='/home'"
+      class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-2 px-5 rounded-xl shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300"
+    >
+      ⬅ Go Back to Home Page
+    </button>
+  </body>
+</html>

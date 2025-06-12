@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NLP Service Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-500 to-indigo-600 min-h-screen flex flex-col items-center justify-center text-white font-sans"
+  >
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+      <div class="alert {{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-2">Welcome to CodeMania NLP</h1>
+      <p class="text-lg text-gray-200">Choose a service below to get started</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl w-full px-4">
+      <!-- Sentiment Analysis -->
+      <div
+        class="bg-white text-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300"
+      >
+        <h2 class="text-2xl font-semibold mb-4">Sentiment Analysis</h2>
+        <p class="mb-6">
+          Analyze text and detect emotions such as positive, negative, or
+          neutral.
+        </p>
+        <a
+          href="/sentiment"
+          class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+          >Try Now</a
+        >
+      </div>
+
+      <!-- Language Detection -->
+      <div
+        class="bg-white text-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300"
+      >
+        <h2 class="text-2xl font-semibold mb-4">Language Detection</h2>
+        <p class="mb-6">
+          Detect the language of any input text instantly with high accuracy.
+        </p>
+        <a
+          href="/language"
+          class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+          >Try Now</a
+        >
+      </div>
+
+      <!-- Semantic Analysis -->
+      <div
+        class="bg-white text-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300"
+      >
+        <h2 class="text-2xl font-semibold mb-4">Semantic Analysis</h2>
+        <p class="mb-6">
+          Understand the meaning of two texts and calculate their similarity.
+        </p>
+        <a
+          href="/semantic"
+          class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+          >Try Now</a
+        >
+      </div>
+    </div>
+  </body>
+</html>
