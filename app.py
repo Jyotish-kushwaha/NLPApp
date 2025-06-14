@@ -1,6 +1,6 @@
 from flask import Flask ,render_template,request, redirect, url_for
 from db import Database
-from flask import request, redirect, flash, session, render_template
+from flask import request, redirect, flash, render_template,session
 from myapi import MyAPI
 
 
@@ -10,6 +10,15 @@ app.secret_key = 'myverysecurekey123'
 
 dbo=Database()
 api=MyAPI()
+import pycountry
+
+def get_language_name(code):
+    try:
+        language = pycountry.languages.get(alpha_2=code)
+        return language.name
+    except:
+        return code  # fallback if code not found
+
 
 
 
@@ -41,6 +50,7 @@ def perform_registeration():
       
 @app.route('/login')
 def login():
+    
     return render_template('login.html')
 
 
@@ -52,25 +62,45 @@ def perform_login():
     
     response = dbo.login(username, password)
     if response:
+        session['logged_in']=True
         
-        flash('Login successful! Welcome, '  , 'success')
-        return redirect('/home')  # redirect to home page
+        
+        return redirect('/home')
+    
+
     else:
         flash('Invalid credentials! Please try again.', 'error')
         return redirect('/login')  # redirect back to login
+    
+    
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('You have been logged out.', 'info')
+    return redirect('/login')
 
 @app.route('/home')
 def home():
+    if not session.get('logged_in'):
+        flash('you need to login first','error')
+        return redirect('/login')
     return render_template('home.html')
 
 @app.route('/sentiment')
 def sentiment():
+    if not session.get('logged_in'):
+        flash('you need to login first','error')
+        return redirect('/login')
     return render_template('sentiment.html')
 
 
 
 @app.route('/perform_sentiment', methods=['POST'])
 def perform_sentiment():
+    if not session.get('logged_in'):
+        flash('you need to login first','error')
+        return redirect('/login')
     text = request.form['text']
     api_response = api.sentiment_analysis(text)
     
@@ -84,24 +114,68 @@ def perform_sentiment():
 
 @app.route('/language')
 def language():
+    if not session.get('logged_in'):
+        flash('you need to login first','error')
+        return redirect('/login')
     return  render_template('language.html')
 
-@app.route('/perform_language',methods=['POST'])
+@app.route('/perform_language', methods=['POST'])
 def perform_language():
-    text=request.form['text']
-    api_response = api.language_detection(text)
-    return render_template('language.html', result=api_response)
+    if not session.get('logged_in'):
+        flash('You need to login first', 'error')
+        return redirect('/login')
+
+    text = request.form['text']
+    api_response = api.language_detection(text)  # {'de': 0.8571}
+
+    lang_code = list(api_response.keys())[0]
+    confidence = api_response[lang_code]
+    lang_name = get_language_name(lang_code)
+
+    return render_template('language.html', 
+                           language=lang_name,
+                           confidence=f"{confidence:.1%}")
+
+
+        
+
 
 @app.route('/semantic')
 def semantic():
+    if not session.get('logged_in'):
+        flash('you need to login first','error')
+        return redirect('/login')
     return render_template('semantic.html ')
 
-@app.route('/perform_semantic',methods=['POST'])
+@app.route('/perform_semantic', methods=['POST'])
 def perform_semantic():
+    if not session.get('logged_in'):
+        flash('You need to login first', 'error')
+        return redirect('/login')
+
     text1 = request.form['text1']
-    text2=request.form['text2']
-    api_response=api.semantic_analysis(text1, text2)
-    return render_template('semantic.html', result=api_response)
+    text2 = request.form['text2']
+    
+    api_response = api.semantic_analysis(text1, text2)
+    similarity_score = api_response['score']
+
+    similarity_percent = round(similarity_score * 100, 1)
+
+    if similarity_score > 0.85:
+        message = "The texts are very similar."
+    elif similarity_score > 0.6:
+        message = "The texts are somewhat similar."
+    elif similarity_score > 0.4:
+        message = "The texts are slightly related."
+    else:
+        message = "The texts are different."
+
+    return render_template('semantic.html', 
+                           similarity=similarity_percent,
+                           message=message,
+                           text1=text1,
+                           text2=text2)
+
 
 if __name__ == '__main__':
    import os

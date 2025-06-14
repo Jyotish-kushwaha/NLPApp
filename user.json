@@ -30,5 +30,17 @@
     "": {
         "name": "",
         "password": ""
+    },
+    "jyotis@gmail.com": {
+        "name": "jyotish",
+        "password": "1234"
+    },
+    "jyoti@gmail.com": {
+        "name": "jyotish",
+        "password": "1234"
+    },
+    "bawna@gmail.com": {
+        "name": "a",
+        "password": "1"
     }
 }

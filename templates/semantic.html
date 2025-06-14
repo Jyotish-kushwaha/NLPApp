@@ -41,24 +41,22 @@
     <h1>Semantic Similarity</h1>
 
     <form method="POST" action="/perform_semantic">
-      <textarea
-        name="text1"
-        placeholder="Enter first sentence..."
-        required
-      ></textarea
+      <textarea name="text1" placeholder="Enter first sentence..." required>
+{{ text1 }}</textarea
       ><br />
-      <textarea
-        name="text2"
-        placeholder="Enter second sentence..."
-        required
-      ></textarea
+      <textarea name="text2" placeholder="Enter second sentence..." required>
+{{ text2 }}</textarea
       ><br />
       <button type="submit">Check Similarity</button>
     </form>
 
-    {% if result %}
-    <div class="result">Similarity Score: {{ result }}</div>
+    {% if similarity %}
+    <div class="result">
+      <p><strong>Similarity Score:</strong> {{ similarity }}%</p>
+      <p><strong>Conclusion:</strong> {{ message }}</p>
+    </div>
     {% endif %}
+
     <button
       onclick="window.location.href='/home'"
       class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-2 px-5 rounded-xl shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300"
