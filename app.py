@@ -31,7 +31,7 @@ def register_page():
     return render_template('register.html')
 
 
-@app.route('/perform_registeration', methods=['POST'])
+@app.route('/perform_registeration', methods=['POST','GET'])
 def perform_registeration():
    username=request.form['name']
    password=request.form['password']
@@ -55,7 +55,7 @@ def login():
 
 
 
-@app.route('/perform_login', methods=['POST'])
+@app.route('/perform_login', methods=['POST','GET'])
 def perform_login():
     username = request.form['email']
     password = request.form['password']
@@ -96,7 +96,7 @@ def sentiment():
 
 
 
-@app.route('/perform_sentiment', methods=['POST'])
+@app.route('/perform_sentiment', methods=['POST','GET'])
 def perform_sentiment():
     if not session.get('logged_in'):
         flash('you need to login first','error')
@@ -119,7 +119,7 @@ def language():
         return redirect('/login')
     return  render_template('language.html')
 
-@app.route('/perform_language', methods=['POST'])
+@app.route('/perform_language', methods=['POST','GET'])
 def perform_language():
     if not session.get('logged_in'):
         flash('You need to login first', 'error')
@@ -147,7 +147,7 @@ def semantic():
         return redirect('/login')
     return render_template('semantic.html ')
 
-@app.route('/perform_semantic', methods=['POST'])
+@app.route('/perform_semantic', methods=['POST','GET'])
 def perform_semantic():
     if not session.get('logged_in'):
         flash('You need to login first', 'error')
