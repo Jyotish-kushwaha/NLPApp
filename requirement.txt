@@ -2,3 +2,6 @@ Flask
 flask-cors
 nlpcloud
 pymongo
+pycountry
+python-dotenv
+dnspython
