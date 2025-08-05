@@ -10,7 +10,7 @@ class MyAPI:
         return response
 
     def language_detection(self,text):
-        client = nlpcloud.Client("python-langdetect", 0292b9a164d1f648374ec2481a1c22bee43d5ad5", gpu=False)
+        client = nlpcloud.Client("python-langdetect", "0292b9a164d1f648374ec2481a1c22bee43d5ad5", gpu=False)
         language=client.langdetection(text)
         response=language['languages'][0]
         print(response)
